@@ -9,6 +9,7 @@ import ru.alishev.springcourse.models.Person;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class PersonDAO {
@@ -31,9 +32,16 @@ public class PersonDAO {
                 .findAny().orElse(null);
     }
 
+    public Optional<Person> show(String email) {
+        return jdbcTemplate.query("SELECT * FROM person WHERE email = ?",
+                        new Object[]{email}, new BeanPropertyRowMapper<>(Person.class))
+                .stream()
+                .findAny();
+    }
+
 
     public void save(Person person) {
-        jdbcTemplate.update("INSERT INTO person VALUES (1, ?, ?, ?)",
+        jdbcTemplate.update("INSERT INTO person (name, age, email) VALUES (?, ?, ?)",
                 person.getName(), person.getAge(), person.getEmail());
     }
 

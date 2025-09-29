@@ -1,6 +1,7 @@
 package ru.alishev.springcourse.models;
 
 public class Human {
+    private int personId;
     private String fullName;
     private int yearOfBirth;
 
@@ -26,5 +27,13 @@ public class Human {
 
     public void setYearOfBirth(int yearOfBirth) {
         this.yearOfBirth = yearOfBirth;
+    }
+
+    public int getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(int personId) {
+        this.personId = personId;
     }
 }

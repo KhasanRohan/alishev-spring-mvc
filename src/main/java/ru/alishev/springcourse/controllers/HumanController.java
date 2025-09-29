@@ -3,10 +3,7 @@ package ru.alishev.springcourse.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.alishev.springcourse.dao.HumanDAO;
 import ru.alishev.springcourse.models.Human;
 
@@ -34,5 +31,11 @@ public class HumanController {
     public String createHuman(@ModelAttribute("human") Human human) {
         humanDAO.save(human);
         return "redirect:/human";
+    }
+
+    @GetMapping("/{id}")
+    public String showOneHuman(@PathVariable("id") int personId, Model model) {
+        model.addAttribute("human",humanDAO.show(personId));
+        return "human/show_one_human";
     }
 }

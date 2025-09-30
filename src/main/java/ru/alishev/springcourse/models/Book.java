@@ -1,6 +1,7 @@
 package ru.alishev.springcourse.models;
 
 public class Book {
+    private int bookId;
     private String name;
     private String author;
     private int year;
@@ -36,5 +37,13 @@ public class Book {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public int getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 @Component
 public class HumanDAO {
     private final JdbcTemplate jdbcTemplate;
-    private final static String SQL = "SELECT * FROM public.person";
+    private final static String FIND_ALL_HUMAN = "SELECT * FROM public.person";
 
     @Autowired
     public HumanDAO(JdbcTemplate jdbcTemplate) {
@@ -20,7 +20,7 @@ public class HumanDAO {
     }
 
     public List<Human> allHumans() {
-        return jdbcTemplate.query(SQL, new BeanPropertyRowMapper<>(Human.class));
+        return jdbcTemplate.query(FIND_ALL_HUMAN, new BeanPropertyRowMapper<>(Human.class));
     }
 
     public void save(Human human) {
@@ -29,7 +29,7 @@ public class HumanDAO {
     }
 
     public Human show(int personId) {
-        return jdbcTemplate.query(SQL + " WHERE person_id = ?", new BeanPropertyRowMapper<>(Human.class), personId)
+        return jdbcTemplate.query(FIND_ALL_HUMAN + " WHERE person_id = ?", new BeanPropertyRowMapper<>(Human.class), personId)
                 .stream()
                 .findFirst()
                 .orElseThrow(() -> new PersonNotFoundException("Person not found with id: " + personId));

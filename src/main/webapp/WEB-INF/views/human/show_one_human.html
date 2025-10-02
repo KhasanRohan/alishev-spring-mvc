@@ -8,12 +8,19 @@
 
 <p th:text="${human.getFullName() + ', ' + human.getYearOfBirth()}">VALUE</p>
 <p th:text="${'id: ' + human.getPersonId()}">VALUE</p>
-<!--<p th:text="${'Email: ' + human.getEmail()}">VALUE</p>-->
 
-<!--<a th:href="@{/human/{id}/edit(id=${human.getId()})}">Edit</a>-->
-
-<!--<form th:method="DELETE" th:action="@{/people/{id}(id=${human.getId()})}">-->
-<!--    <input type="submit" value="Delete"/>-->
-<!--</form>-->
+<div th:if="${not #lists.isEmpty(books)}">
+    <strong>Книги:</strong>
+    <div th:each="book : ${books}" style="margin-top: 10px;">
+        <p th:text="|${book.name} - ${book.author} (${book.year})|">
+            Информация о книге
+        </p>
+    </div>
+</div>
+<div th:unless="${not #lists.isEmpty(books)}">
+    <p>У этого человека пока нет книг</p>
+</div>
+<br/>
+<a th:href="@{/human/{id}/edit(id=${human.getPersonId()})}">Редактировать!</a>
 
 </body>

@@ -1,11 +1,17 @@
 package ru.alishev.springcourse.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.alishev.springcourse.dao.HumanDAO;
+import ru.alishev.springcourse.models.Book;
 import ru.alishev.springcourse.models.Human;
+import ru.alishev.springcourse.models.Person;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/human")
@@ -35,7 +41,24 @@ public class HumanController {
 
     @GetMapping("/{id}")
     public String showOneHuman(@PathVariable("id") int personId, Model model) {
+        List<Book> books = humanDAO.showBooksForThatHuman(personId);
+//        System.out.println("Found books: " + books.size());
+//        books.forEach(book -> System.out.println("Book: " + book.getName()));
         model.addAttribute("human",humanDAO.show(personId));
+        model.addAttribute("books", books);
         return "human/show_one_human";
     }
+
+    @GetMapping("/{id}/edit")
+    public String editPage(Model model, @PathVariable("id") int id) {
+        model.addAttribute("human", humanDAO.show(id));
+        return "human/edit_human";
+    }
+
+    @PatchMapping("/{id}")
+    public String updateHuman(@ModelAttribute("human") Human human, @PathVariable("id") int id) {
+        humanDAO.edit(id, human);
+        return "redirect:/human";
+    }
+
 }

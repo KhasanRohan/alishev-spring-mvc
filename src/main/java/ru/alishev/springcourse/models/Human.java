@@ -1,9 +1,13 @@
 package ru.alishev.springcourse.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Human {
     private int personId;
     private String fullName;
     private int yearOfBirth;
+//    private List<Book> bookList = new ArrayList<>();
 
     public Human() {
     }

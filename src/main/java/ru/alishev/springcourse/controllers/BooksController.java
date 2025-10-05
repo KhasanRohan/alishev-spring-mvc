@@ -48,4 +48,10 @@ public class BooksController {
         return "redirect:/books";
     }
 
+    @DeleteMapping("/{id}")
+    public String deleteThatBook(@PathVariable("id") int id) {
+        bookDAO.remove(id);
+        return "redirect:/books";
+    }
+
 }

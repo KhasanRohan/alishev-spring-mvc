@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.alishev.springcourse.exception.BookNotFoundException;
+import ru.alishev.springcourse.mapper.BookMapper;
 import ru.alishev.springcourse.models.Book;
 
 import java.util.List;
@@ -19,14 +20,19 @@ public class BookDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Book> allBooks(){
-        return jdbcTemplate.query(FIND_ALL_BOOKS, new BeanPropertyRowMapper<>(Book.class));
+    public List<Book> allBooks() {
+        return jdbcTemplate.query(FIND_ALL_BOOKS, new BookMapper());
     }
 
     public Book show(int bookId) {
-        return jdbcTemplate.query(FIND_ALL_BOOKS + " WHERE book_id = ?", new BeanPropertyRowMapper<>(Book.class), bookId)
+        return jdbcTemplate.query(FIND_ALL_BOOKS + " WHERE book_id = ?", new BookMapper(), bookId)
                 .stream()
                 .findFirst()
                 .orElseThrow(() -> new BookNotFoundException("Книга не найдена с таким id = " + bookId));
+    }
+
+    public void save(Book book) {
+        jdbcTemplate.update("INSERT INTO public.book (name, author, year) VALUES (?, ?, ?)",
+                book.getName(), book.getAuthor(), book.getYear());
     }
 }

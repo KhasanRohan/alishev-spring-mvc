@@ -6,6 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.alishev.springcourse.dao.BookDAO;
 import ru.alishev.springcourse.models.Book;
+import ru.alishev.springcourse.models.Human;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/books")
@@ -22,6 +25,8 @@ public class BooksController {
     @GetMapping("/{id}")
     public String showOneBook(@PathVariable("id") int bookId, Model model) {
         model.addAttribute("book", bookDAO.show(bookId));
+        model.addAttribute("isAvailable", bookDAO.isBookAvailable(bookId));
+        model.addAttribute("personsBook", bookDAO.findPersonByBookId(bookId));
         return "books/show_one_book";
     }
 

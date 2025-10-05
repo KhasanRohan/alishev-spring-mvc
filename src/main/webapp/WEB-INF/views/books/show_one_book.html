@@ -8,7 +8,32 @@
 
 <p th:text="${book.getName() + ', ' + book.getAuthor() + ', ' + book.getYear()}">VALUE</p>
 <p th:text="${'id: ' + book.getBookId()}">VALUE</p>
-<!--<p th:text="${'Email: ' + book.getEmail()}">VALUE</p>-->
+
+<div th:if="${isAvailable}">
+    <p>Эта книга свободна, кому назначить ее.</p>
+    <!-- Форма для назначения книги -->
+<!--    <form th:action="@{/books/assign/{id}(id=${book.id})}" method="post">-->
+<!--        <select name="personId" required>-->
+<!--            <option value="">&#45;&#45; Выберите человека &#45;&#45;</option>-->
+<!--            <option th:each="person : ${people}"-->
+<!--                    th:value="${person.id}"-->
+<!--                    th:text="${person.name}">-->
+<!--            </option>-->
+<!--        </select>-->
+<!--        <button type="submit">Назначить книгу</button>-->
+<!--    </form>-->
+</div>
+
+<div th:unless="${isAvailable}">
+    <p>Книга сейчас у человека с именем:
+        <span th:text="${personsBook.getFullName()}"></span>
+    </p>
+
+    <!-- Форма для освобождения книги -->
+<!--    <form th:action="@{/books/release/{id}(id=${book.id})}" method="post">-->
+<!--        <button type="submit">Освободить книгу</button>-->
+<!--    </form>-->
+<!--</div>-->
 
 <a th:href="@{/books/{id}/edit(id=${book.getBookId()})}">Редактировать!</a>
 

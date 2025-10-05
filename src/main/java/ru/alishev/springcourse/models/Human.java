@@ -40,4 +40,11 @@ public class Human {
     public void setPersonId(int personId) {
         this.personId = personId;
     }
+
+    @Override
+    public String toString() {
+        return "Human{" +
+                "fullName='" + fullName + '\'' +
+                '}';
+    }
 }

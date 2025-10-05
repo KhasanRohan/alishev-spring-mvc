@@ -5,15 +5,25 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.alishev.springcourse.exception.BookNotFoundException;
+import ru.alishev.springcourse.exception.PersonNotFoundException;
 import ru.alishev.springcourse.mapper.BookMapper;
+import ru.alishev.springcourse.mapper.HumanMapper;
 import ru.alishev.springcourse.models.Book;
+import ru.alishev.springcourse.models.Human;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class BookDAO {
     private final JdbcTemplate jdbcTemplate;
     private static final String FIND_ALL_BOOKS = "SELECT * FROM public.book";
+    private static final String FIND_PERSON_BY_BOOK_ID = """
+            SELECT p.person_id, p.full_name, p.year_of_birth
+            FROM book b LEFT JOIN person p
+            ON p.person_id = b.person_id
+            WHERE b.book_id = ?
+            """;
 
     @Autowired
     public BookDAO(JdbcTemplate jdbcTemplate) {
@@ -44,4 +54,27 @@ public class BookDAO {
     public void remove(int id) {
         jdbcTemplate.update("DELETE FROM public.book WHERE book_id = ?", id);
     }
+
+    public Book thisBookHasNoPerson(int id) {
+        return jdbcTemplate.query(FIND_ALL_BOOKS + " WHERE book_id = ? AND person_id IS NULL", new BookMapper(), id)
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new BookNotFoundException("Книга не найдена с таким id = " + id));
+    }
+
+    public boolean isBookAvailable(int id) {
+        try {
+            thisBookHasNoPerson(id);
+            return true;
+        } catch (BookNotFoundException e) {
+            return false;
+        }
+    }
+
+    public Human findPersonByBookId(int id) {
+        return jdbcTemplate.query(FIND_PERSON_BY_BOOK_ID,
+                new HumanMapper(),
+                id).stream().findFirst().orElseThrow(() -> new PersonNotFoundException("Person not found with id: " + id));
+    }
+
 }

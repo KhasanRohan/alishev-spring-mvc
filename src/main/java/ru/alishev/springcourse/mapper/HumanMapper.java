@@ -1,4 +1,4 @@
-package ru.alishev.springcourse.dao;
+package ru.alishev.springcourse.mapper;
 
 import org.springframework.jdbc.core.RowMapper;
 import ru.alishev.springcourse.models.Human;

@@ -1,12 +1,10 @@
-package ru.alishev.springcourse.dao;
+package ru.alishev.springcourse.mapper;
 
 import org.springframework.jdbc.core.RowMapper;
 import ru.alishev.springcourse.models.Book;
-import ru.alishev.springcourse.models.Human;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 public class BookMapper implements RowMapper<Book> {
     @Override

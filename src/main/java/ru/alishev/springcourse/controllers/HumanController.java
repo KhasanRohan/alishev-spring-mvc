@@ -61,4 +61,10 @@ public class HumanController {
         return "redirect:/human";
     }
 
+    @DeleteMapping("/{id}")
+    public String deleteThatHuman(@PathVariable("id") int id) {
+        humanDAO.remove(id);
+        return "redirect:/human";
+    }
+
 }

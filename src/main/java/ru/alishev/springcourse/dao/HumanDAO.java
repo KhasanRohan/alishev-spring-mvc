@@ -47,4 +47,7 @@ public class HumanDAO {
                 new BeanPropertyRowMapper<>(Book.class), id);
     }
 
+    public void remove(int id) {
+        jdbcTemplate.update("DELETE FROM public.person WHERE person_id = ?", id);
+    }
 }

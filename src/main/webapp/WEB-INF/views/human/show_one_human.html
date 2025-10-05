@@ -22,5 +22,9 @@
 </div>
 <br/>
 <a th:href="@{/human/{id}/edit(id=${human.getPersonId()})}">Редактировать!</a>
+<br/>
+<form th:method="DELETE" th:action="@{/human/{id}(id=${human.getPersonId()})}">
+    <input type="submit" value="Delete"/>
+</form>
 
 </body>

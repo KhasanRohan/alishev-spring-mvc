@@ -16,7 +16,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/human")
 public class HumanController {
-    private HumanDAO humanDAO;
+    private final HumanDAO humanDAO;
 
     @Autowired
     public HumanController(HumanDAO humanDAO) {

@@ -1,10 +1,18 @@
 package ru.alishev.springcourse.models;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+
 public class Human {
     private int personId;
+
+    @NotEmpty(message = "ФИО не должно быть пустым")
+    @Size(min = 2, max = 100, message = "ФИО должно быть от 2 и 100 символов длинной")
     private String fullName;
+
+    @Min(value = 1900, message = "Год рождения должен быть больше, чем 1900")
     private int yearOfBirth;
-//    private List<Book> bookList = new ArrayList<>();
 
     public Human() {
     }

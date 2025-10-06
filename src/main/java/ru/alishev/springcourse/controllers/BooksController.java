@@ -14,9 +14,9 @@ import ru.alishev.springcourse.models.Human;
 @RequestMapping("/books")
 public class BooksController {
 
-    private BookDAO bookDAO;
+    private final BookDAO bookDAO;
 
-    private HumanDAO humanDAO;
+    private final HumanDAO humanDAO;
 
     @Autowired
     public BooksController(BookDAO bookDAO, HumanDAO humanDAO) {

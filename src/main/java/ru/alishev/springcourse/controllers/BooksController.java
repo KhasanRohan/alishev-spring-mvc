@@ -5,16 +5,23 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.alishev.springcourse.dao.BookDAO;
+import ru.alishev.springcourse.dao.HumanDAO;
 import ru.alishev.springcourse.models.Book;
 import ru.alishev.springcourse.models.Human;
-
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/books")
 public class BooksController {
-    @Autowired
+
     private BookDAO bookDAO;
+
+    private HumanDAO humanDAO;
+
+    @Autowired
+    public BooksController(BookDAO bookDAO, HumanDAO humanDAO) {
+        this.bookDAO = bookDAO;
+        this.humanDAO = humanDAO;
+    }
 
     @GetMapping()
     public String allBooksPage(Model model) {
@@ -27,6 +34,7 @@ public class BooksController {
         model.addAttribute("book", bookDAO.show(bookId));
         model.addAttribute("isAvailable", bookDAO.isBookAvailable(bookId));
         model.addAttribute("personsBook", bookDAO.findPersonByBookId(bookId));
+        model.addAttribute("people", humanDAO.allHumans());
         return "books/show_one_book";
     }
 
@@ -57,6 +65,12 @@ public class BooksController {
     public String deleteThatBook(@PathVariable("id") int id) {
         bookDAO.remove(id);
         return "redirect:/books";
+    }
+
+    @PostMapping("/{id}/assign")
+    public String assignBook(@PathVariable("id") int bookId, @ModelAttribute("person") Human human) {
+        bookDAO.assignBook(human.getPersonId(), bookId);
+        return "redirect:/books/{id}";
     }
 
 }

@@ -55,26 +55,24 @@ public class BookDAO {
         jdbcTemplate.update("DELETE FROM public.book WHERE book_id = ?", id);
     }
 
-    public Book thisBookHasNoPerson(int id) {
+    public boolean isBookAvailable(int id) {
         return jdbcTemplate.query(FIND_ALL_BOOKS + " WHERE book_id = ? AND person_id IS NULL", new BookMapper(), id)
                 .stream()
                 .findFirst()
-                .orElseThrow(() -> new BookNotFoundException("Книга не найдена с таким id = " + id));
-    }
-
-    public boolean isBookAvailable(int id) {
-        try {
-            thisBookHasNoPerson(id);
-            return true;
-        } catch (BookNotFoundException e) {
-            return false;
-        }
+                .isPresent();
     }
 
     public Human findPersonByBookId(int id) {
         return jdbcTemplate.query(FIND_PERSON_BY_BOOK_ID,
-                new HumanMapper(),
-                id).stream().findFirst().orElseThrow(() -> new PersonNotFoundException("Person not found with id: " + id));
+                        new HumanMapper(), id)
+                .stream()
+                .findFirst()
+                .get();
+    }
+
+    public void assignBook(int personId, int bookId) {
+        jdbcTemplate.update("UPDATE public.book SET person_id = ? WHERE book_id = ?",
+                personId, bookId);
     }
 
 }

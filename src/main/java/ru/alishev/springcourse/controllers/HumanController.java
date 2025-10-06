@@ -42,8 +42,6 @@ public class HumanController {
     @GetMapping("/{id}")
     public String showOneHuman(@PathVariable("id") int personId, Model model) {
         List<Book> books = humanDAO.showBooksForThatHuman(personId);
-//        System.out.println("Found books: " + books.size());
-//        books.forEach(book -> System.out.println("Book: " + book.getName()));
         model.addAttribute("human",humanDAO.show(personId));
         model.addAttribute("books", books);
         return "human/show_one_human";

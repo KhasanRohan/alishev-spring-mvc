@@ -62,17 +62,19 @@ public class BookDAO {
                 .isPresent();
     }
 
-    public Human findPersonByBookId(int id) {
-        return jdbcTemplate.query(FIND_PERSON_BY_BOOK_ID,
-                        new HumanMapper(), id)
+    public Optional<Human> findPersonByBookId(int id) {
+        return jdbcTemplate.query(FIND_PERSON_BY_BOOK_ID, new HumanMapper(), id)
                 .stream()
-                .findFirst()
-                .get();
+                .findFirst();
     }
 
     public void assignBook(int personId, int bookId) {
         jdbcTemplate.update("UPDATE public.book SET person_id = ? WHERE book_id = ?",
                 personId, bookId);
+    }
+
+    public void releaseBook(int bookId) {
+        jdbcTemplate.update("UPDATE public.book SET person_id = null WHERE book_id = ?", bookId);
     }
 
 }

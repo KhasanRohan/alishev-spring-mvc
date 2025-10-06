@@ -1,8 +1,5 @@
 package ru.alishev.springcourse.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Human {
     private int personId;
     private String fullName;
@@ -41,10 +38,4 @@ public class Human {
         this.personId = personId;
     }
 
-    @Override
-    public String toString() {
-        return "Human{" +
-                "fullName='" + fullName + '\'' +
-                '}';
-    }
 }

@@ -1,5 +1,6 @@
 package ru.alishev.springcourse.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +34,7 @@ public class BooksController {
     public String showOneBook(@PathVariable("id") int bookId, Model model) {
         model.addAttribute("book", bookDAO.show(bookId));
         model.addAttribute("isAvailable", bookDAO.isBookAvailable(bookId));
-        model.addAttribute("personsBook", bookDAO.findPersonByBookId(bookId));
+        model.addAttribute("personsBook", bookDAO.findPersonByBookId(bookId).orElse(null));
         model.addAttribute("people", humanDAO.allHumans());
         return "books/show_one_book";
     }
@@ -68,8 +69,15 @@ public class BooksController {
     }
 
     @PostMapping("/{id}/assign")
-    public String assignBook(@PathVariable("id") int bookId, @ModelAttribute("person") Human human) {
-        bookDAO.assignBook(human.getPersonId(), bookId);
+    public String assignBook(@PathVariable("id") int bookId,
+                             @RequestParam("personId") int personId) {
+        bookDAO.assignBook(personId, bookId);
+        return "redirect:/books/{id}";
+    }
+
+    @PostMapping("/{id}/release")
+    public String release(@PathVariable("id") int bookId) {
+        bookDAO.releaseBook(bookId);
         return "redirect:/books/{id}";
     }
 

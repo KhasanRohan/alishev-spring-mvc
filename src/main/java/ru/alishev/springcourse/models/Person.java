@@ -1,5 +1,7 @@
 package ru.alishev.springcourse.models;
 
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -17,6 +19,7 @@ public class Person {
     private String email;
 
     @Min(value = 0, message = "age should be greater than 0")
+    @Temporal(TemporalType.DATE)
     private int age;
 
     public Person() {

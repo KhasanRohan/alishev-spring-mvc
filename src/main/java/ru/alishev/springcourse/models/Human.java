@@ -1,18 +1,33 @@
 package ru.alishev.springcourse.models;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "person")
 public class Human {
+
+    @Id
+    @Column(name = "person_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int personId;
 
+    @Column(name = "full_name")
     @NotEmpty(message = "ФИО не должно быть пустым")
     @Size(min = 2, max = 100, message = "ФИО должно быть от 2 и 100 символов длинной")
     private String fullName;
 
+    @Column(name = "year_of_birth")
     @Min(value = 1900, message = "Год рождения должен быть больше, чем 1900")
     private int yearOfBirth;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Book> books = new ArrayList<>();
 
     public Human() {
     }
@@ -20,6 +35,14 @@ public class Human {
     public Human(String fullName, int yearOfBirth) {
         this.fullName = fullName;
         this.yearOfBirth = yearOfBirth;
+    }
+
+    public int getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(int personId) {
+        this.personId = personId;
     }
 
     public String getFullName() {
@@ -38,12 +61,11 @@ public class Human {
         this.yearOfBirth = yearOfBirth;
     }
 
-    public int getPersonId() {
-        return personId;
+    public List<Book> getBooks() {
+        return books;
     }
 
-    public void setPersonId(int personId) {
-        this.personId = personId;
+    public void setBooks(List<Book> books) {
+        this.books = books;
     }
-
 }

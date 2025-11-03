@@ -6,12 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.alishev.springcourse.models.Book;
-import ru.alishev.springcourse.models.Human;
-import ru.alishev.springcourse.models.Person;
 import ru.alishev.springcourse.services.BookService;
 import ru.alishev.springcourse.services.HumanService;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/books")

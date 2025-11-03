@@ -11,6 +11,7 @@ import ru.alishev.springcourse.models.Human;
 import ru.alishev.springcourse.repositories.BookRepository;
 import ru.alishev.springcourse.repositories.HumanRepository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -68,18 +69,16 @@ public class BookService {
         Book freeBook = bookRepository.findById(bookId).orElse(null);
         human.setBooks(new ArrayList<>(Collections.singletonList(freeBook)));
         freeBook.setOwner(human);
+        freeBook.setBookWasTaken(LocalDateTime.now());
         bookRepository.save(freeBook);
     }
 
     @Transactional
     public void releaseBook(int bookId) {
-        bookRepository.findById(bookId).ifPresent(
-                book -> {
-                    book.setOwner(null);
-                    book.setBookWasTaken(null);
-                }
-        );
-
+        Book book = findOne(bookId);
+        book.setOwner(null);
+        book.setBookWasTaken(null);
+        bookRepository.save(book);
     }
 
     public List<Book> pagination(int page, int booksPerPage, boolean sortByYear) {

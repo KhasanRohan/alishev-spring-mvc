@@ -79,13 +79,13 @@ public class BooksController {
     public String assignBook(@PathVariable("id") int bookId,
                              @RequestParam("personId") int personId) {
         bookService.assignBook(personId, bookId);
-        return "redirect:/books/{id}";
+        return "redirect:/books/" + bookId;
     }
 
     @PostMapping("/{id}/release")
     public String release(@PathVariable("id") int bookId) {
         bookService.releaseBook(bookId);
-        return "redirect:/books/{id}";
+        return "redirect:/books/" + bookId;
     }
 
     @GetMapping("/search")

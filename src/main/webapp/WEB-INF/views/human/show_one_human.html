@@ -11,10 +11,16 @@
 
 <div th:if="${not #lists.isEmpty(books)}">
     <strong>Книги:</strong>
-    <div th:each="book : ${books}" style="margin-top: 10px;">
-        <p th:text="|${book.name} - ${book.author} (${book.year})|">
-            Информация о книге
-        </p>
+    <div th:each="book : ${books}">
+
+        <span th:if="${book.expired}" style="color: red; font-weight: bold;">
+            <span th:text="|${book.name}, ${book.author}, ${book.year}|"></span>
+        </span>
+
+        <span th:unless="${book.expired}">
+            <span th:text="|${book.name}, ${book.author}, ${book.year}|"></span>
+        </span>
+
     </div>
 </div>
 <div th:unless="${not #lists.isEmpty(books)}">

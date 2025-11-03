@@ -46,7 +46,7 @@ public class HumanController {
 
     @GetMapping("/{id}")
     public String showOneHuman(@PathVariable("id") Integer personId, Model model) {
-        List<Book> books = bookService.findBooksThatPerson(personId);
+        List<Book> books = bookService.findBooksWithExpiryInfo(personId);
         model.addAttribute("human", humanService.findOne(personId));
         model.addAttribute("books", books);
         return "human/show_one_human";

@@ -11,8 +11,8 @@ import ru.alishev.springcourse.models.Human;
 import ru.alishev.springcourse.repositories.BookRepository;
 import ru.alishev.springcourse.repositories.HumanRepository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -45,17 +45,15 @@ public class BookService {
 
     @Transactional
     public void update(int bookId, Book book) {
+        Book bookToBeUpdated = bookRepository.findById(bookId).get();
         book.setBookId(bookId);
+        book.setOwner(bookToBeUpdated.getOwner());
         bookRepository.save(book);
     }
 
     @Transactional
     public void delete(int bookId) {
         bookRepository.deleteById(bookId);
-    }
-
-    public List<Book> findBooksThatPerson(Integer bookId) {
-        return bookRepository.findByOwnerPersonId(bookId);
     }
 
     public boolean isBookAvailable(Integer id) {
@@ -72,14 +70,17 @@ public class BookService {
         human.setBooks(new ArrayList<>(Collections.singletonList(freeBook)));
         freeBook.setOwner(human);
         bookRepository.save(freeBook);
-//        humanRepository.save(human);
     }
 
     @Transactional
     public void releaseBook(int bookId) {
-        Book book = bookRepository.findById(bookId).orElse(null);
-        book.setOwner(null);
-        bookRepository.save(book);
+        bookRepository.findById(bookId).ifPresent(
+                book -> {
+                    book.setOwner(null);
+                    book.setBookWasTaken(null);
+                }
+        );
+
     }
 
     public List<Book> pagination(int page, int booksPerPage, boolean sortByYear) {
@@ -89,13 +90,18 @@ public class BookService {
         return bookRepository.findAll(PageRequest.of(page, booksPerPage)).getContent();
     }
 
-    public Book searchThatBook(String searchQuery) {
+    public Book searchByNameBook(String searchQuery) {
         Book book = bookRepository.findByNameStartingWithIgnoreCase(searchQuery);
         if (book != null) {
             return book;
         } else {
             return new Book();
         }
+    }
 
+    public List<Book> findBooksWithExpiryInfo(Integer personId) {
+        List<Book> bookList = bookRepository.findByOwnerPersonId(personId);
+        bookList.forEach(book -> book.setExpired(book.calculateExpired()));
+        return bookList;
     }
 }

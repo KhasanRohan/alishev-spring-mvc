@@ -6,6 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.alishev.springcourse.models.Book;
+import ru.alishev.springcourse.models.Human;
+import ru.alishev.springcourse.models.Person;
 import ru.alishev.springcourse.services.BookService;
 import ru.alishev.springcourse.services.HumanService;
 
@@ -97,7 +99,7 @@ public class BooksController {
 
     @GetMapping("/find")
     public String searchBook(@RequestParam(name = "search", required = false) String searchQuery, RedirectAttributes redirectAttributes) {
-        Book book = bookService.searchThatBook(searchQuery);
+        Book book = bookService.searchByNameBook(searchQuery);
         if (book.getBookId() != 0) {
             redirectAttributes.addFlashAttribute("book", book);
             redirectAttributes.addFlashAttribute("isAvailable", bookService.isBookAvailable(book.getBookId()));
